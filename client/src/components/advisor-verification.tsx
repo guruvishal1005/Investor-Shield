@@ -7,7 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { UserCheck, ChevronDown, ChevronUp, AlertTriangle, CheckCircle, User } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { UserCheck, ChevronDown, ChevronUp, AlertTriangle, CheckCircle, User, Search } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { authService } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +18,7 @@ export default function AdvisorVerification() {
   const [formData, setFormData] = useState({ name: "", regNumber: "" });
   const [verificationResult, setVerificationResult] = useState<any>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
   const { data: recentAdvisors } = useQuery({
@@ -94,15 +97,60 @@ export default function AdvisorVerification() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="advisor-name">Advisor Name</Label>
-                <Input
-                  id="advisor-name"
-                  type="text"
-                  placeholder="Enter advisor name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  data-testid="input-advisor-name"
-                  required
-                />
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-between"
+                      data-testid="button-advisor-search"
+                    >
+                      {formData.name || "Search advisor name..."}
+                      <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command>
+                      <CommandInput 
+                        placeholder="Search advisors..." 
+                        value={formData.name}
+                        onValueChange={(value) => setFormData({ ...formData, name: value })}
+                        data-testid="input-advisor-search"
+                      />
+                      <CommandList>
+                        <CommandEmpty>No advisor found.</CommandEmpty>
+                        <CommandGroup>
+                          {recentAdvisors?.advisors?.map((advisor: any) => (
+                            <CommandItem
+                              key={advisor.id}
+                              value={advisor.name}
+                              onSelect={(currentValue) => {
+                                setFormData({ 
+                                  ...formData, 
+                                  name: currentValue,
+                                  regNumber: advisor.regNumber || ""
+                                });
+                                setOpen(false);
+                              }}
+                              data-testid={`option-advisor-${advisor.name.replace(/\s+/g, '-').toLowerCase()}`}
+                            >
+                              <div className="flex items-center">
+                                <User className="mr-2 h-4 w-4" />
+                                <div>
+                                  <div className="font-medium">{advisor.name}</div>
+                                  <div className="text-sm text-slate-500">
+                                    {advisor.regNumber} • Trust Score: {advisor.trustScore}
+                                  </div>
+                                </div>
+                              </div>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="sebi-reg">SEBI Registration Number (Optional)</Label>
