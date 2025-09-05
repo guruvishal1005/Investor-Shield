@@ -33,7 +33,7 @@ export const authService = {
     return !!token;
   },
 
-  getAuthHeaders() {
+  getAuthHeaders(): Record<string, string> {
     const { token } = this.getAuthState();
     return token ? { Authorization: `Bearer ${token}` } : {};
   }

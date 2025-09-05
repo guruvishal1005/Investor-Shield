@@ -175,7 +175,16 @@ export class MemStorage implements IStorage {
 
   async createAdvisor(insertAdvisor: InsertAdvisor): Promise<Advisor> {
     const id = randomUUID();
-    const advisor: Advisor = { ...insertAdvisor, id };
+    const advisor: Advisor = { 
+      ...insertAdvisor, 
+      id,
+      regNumber: insertAdvisor.regNumber || null,
+      specialization: insertAdvisor.specialization || null,
+      isRegistered: insertAdvisor.isRegistered ?? false,
+      complaintsCount: insertAdvisor.complaintsCount ?? 0,
+      trustScore: insertAdvisor.trustScore ?? 0,
+      yearsExperience: insertAdvisor.yearsExperience ?? 0
+    };
     this.advisors.set(id, advisor);
     return advisor;
   }
@@ -214,7 +223,15 @@ export class MemStorage implements IStorage {
 
   async createApp(insertApp: InsertApp): Promise<App> {
     const id = randomUUID();
-    const app: App = { ...insertApp, id };
+    const app: App = { 
+      ...insertApp, 
+      id,
+      url: insertApp.url || null,
+      developer: insertApp.developer || null,
+      riskFactors: insertApp.riskFactors || null,
+      recommendation: insertApp.recommendation || null,
+      isLegit: insertApp.isLegit ?? false
+    };
     this.apps.set(id, app);
     return app;
   }
@@ -232,7 +249,8 @@ export class MemStorage implements IStorage {
     const review: Review = { 
       ...insertReview, 
       id,
-      timestamp: new Date()
+      timestamp: new Date(),
+      isVerified: insertReview.isVerified || false
     };
     this.reviews.set(id, review);
     return review;
