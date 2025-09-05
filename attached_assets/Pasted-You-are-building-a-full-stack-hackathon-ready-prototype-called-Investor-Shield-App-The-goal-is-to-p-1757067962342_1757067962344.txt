@@ -1,0 +1,94 @@
+You are building a full-stack hackathon-ready prototype called Investor Shield App. The goal is to protect retail investors from fraud by verifying advisors/brokers and detecting fake trading apps.
+
+Requirements:
+🔹 Frontend
+
+Use React + TailwindCSS for a clean, modern UI.
+
+Create a dashboard-style web app with 3 main sections:
+
+Advisor Verification
+
+Input: advisor name or SEBI registration number.
+
+On submit → call backend API /verify-advisor.
+
+Display advisor details, registration status (✅ Registered / ❌ Not Found), and a “Trust Score” (0–100 with progress bar).
+
+Show complaints history + user reviews in a collapsible section.
+
+Fake App Detector
+
+Input: app/website name or URL.
+
+On submit → call backend API /check-app.
+
+Show status: Legitimate / Suspicious.
+
+Display explanation (e.g., “Logo mismatch”, “Unverified developer”, etc.).
+
+User Reviews
+
+Simple form: Add feedback/review for an advisor.
+
+Display list of reviews with ratings.
+
+Navbar with sections → “Verify Advisor”, “Fake App Detector”, “Community Reviews”.
+
+Use cards, badges, progress bars, alerts for a modern, hackathon-friendly UI.
+
+🔹 Backend
+
+Use Node.js with Express.
+
+Endpoints:
+
+POST /verify-advisor: Takes { name, regNumber } → checks mock SEBI dataset → returns advisor details + trust score + complaints.
+
+POST /check-app: Takes { appName, url } → runs simple checks against mock dataset of legitimate brokers → returns status + explanation.
+
+POST /add-review: Stores a review in MongoDB.
+
+GET /reviews/:advisorId: Fetches reviews for that advisor.
+
+Use JWT auth (simple login/signup with email/password for demo).
+
+🔹 Database
+
+Use MongoDB (Mongoose).
+
+Collections:
+
+advisors: { id, name, regNumber, isRegistered, complaintsCount, trustScore }
+
+apps: { id, appName, developer, isLegit, reasons }
+
+reviews: { advisorId, userId, rating, comment, timestamp }
+
+users: { id, email, passwordHash }
+
+Seed with mock data for demo (e.g., 5 advisors, 3 fake apps, 5 reviews).
+
+🔹 Bonus Features (if time)
+
+Progressive Web App (PWA) support so it feels like a mobile app.
+
+Search Autocomplete for advisors.
+
+Dark Mode toggle.
+
+🔹 Deliverables
+
+Full-stack codebase (React frontend + Express backend + MongoDB).
+
+Clean UI with Tailwind components.
+
+Minimal but functional flows for demo:
+
+Verify advisor → show trust score.
+
+Check app → flag suspicious ones.
+
+Add/read reviews.
+
+Build this as if it’s a hackathon project that needs to impress judges: modern UI, smooth flow, real-looking demo with mock data, and clean code.
