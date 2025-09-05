@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Shield - Protect Your Investments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                }
+            }
+        }
+    };
+    </script>
+    <style>
+        :root {
+            --background: 248 250 252;
+            --foreground: 15 23 42;
+            --card: 255 255 255;
+            --card-foreground: 15 23 42;
+            --primary: 30 58 138;
+            --primary-foreground: 248 250 252;
+            --secondary: 59 130 246;
+            --secondary-foreground: 248 250 252;
+            --muted: 241 245 249;
+            --muted-foreground: 100 116 139;
+            --accent: 16 185 129;
+            --accent-foreground: 255 255 255;
+            --destructive: 239 68 68;
+            --destructive-foreground: 255 255 255;
+            --border: 226 232 240;
+            --input: 226 232 240;
+            --ring: 59 130 246;
+            --radius: 0.5rem;
+        }
+
+        [data-theme="dark"] {
+            --background: 15 23 42;
+            --foreground: 248 250 252;
+            --card: 30 41 59;
+            --card-foreground: 248 250 252;
+            --primary: 59 130 246;
+            --primary-foreground: 15 23 42;
+            --secondary: 30 58 138;
+            --secondary-foreground: 248 250 252;
+            --muted: 51 65 85;
+            --muted-foreground: 148 163 184;
+            --accent: 16 185 129;
+            --accent-foreground: 15 23 42;
+            --destructive: 239 68 68;
+            --destructive-foreground: 255 255 255;
+            --border: 51 65 85;
+            --input: 51 65 85;
+            --ring: 59 130 246;
+        }
+
+        .trust-score-gradient {
+            background: linear-gradient(90deg, #EF4444 0%, #F59E0B 50%, #10B981 100%);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-background text-foreground font-sans">
+    <!-- @COMPONENT: Header [Navigation and user authentication] -->
+    <header class="bg-card border-b border-border shadow-sm sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-shield-alt text-primary text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-primary">Investor Shield</span>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <button data-tab="verify-advisor" class="nav-tab px-3 py-2 text-sm font-medium text-primary border-b-2 border-primary">
+                                <i class="fas fa-user-check mr-2"></i>Verify Advisor
+                            </button>
+                            <button data-tab="app-detector" class="nav-tab px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                                <i class="fas fa-mobile-alt mr-2"></i>App Detector
+                            </button>
+                            <button data-tab="reviews" class="nav-tab px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                                <i class="fas fa-comments mr-2"></i>Reviews
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-muted hover:bg-accent transition-colors">
+                        <i class="fas fa-moon text-muted-foreground"></i>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="hidden sm:flex flex-col items-end">
+                            <span class="text-sm font-medium" data-bind="user.name">John Investor</span>
+                            <span class="text-xs text-muted-foreground" data-bind="user.email">john@example.com</span>
+                        </div>
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-primary-foreground" data-bind="user.initials">JI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation -->
+        <div class="md:hidden border-t border-border">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button data-tab="verify-advisor" class="nav-tab mobile-nav-tab block px-3 py-2 text-base font-medium text-primary bg-primary/10 rounded-md w-full text-left">
+                    <i class="fas fa-user-check mr-2"></i>Verify Advisor
+                </button>
+                <button data-tab="app-detector" class="nav-tab mobile-nav-tab block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground w-full text-left">
+                    <i class="fas fa-mobile-alt mr-2"></i>App Detector
+                </button>
+                <button data-tab="reviews" class="nav-tab mobile-nav-tab block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground w-full text-left">
+                    <i class="fas fa-comments mr-2"></i>Reviews
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: MainDashboard [Container for all main sections] -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-foreground mb-2">Investment Protection Dashboard</h1>
+            <p class="text-muted-foreground">Verify financial advisors, detect fake apps, and access community insights to protect your investments.</p>
+        </div>
+
+        <!-- @COMPONENT: AdvisorVerification [Main advisor verification section] -->
+        <section id="verify-advisor" class="tab-content fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Verification Form -->
+                <div class="bg-card rounded-lg shadow-md border border-border p-6">
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-user-check text-primary text-xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold">Advisor Verification</h2>
+                    </div>
+                    
+                    <form id="advisorForm" data-implementation="Should validate and call /verify-advisor API">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Advisor Name</label>
+                                <input type="text" class="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Enter advisor name" data-bind="form.advisorName">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">SEBI Registration Number (Optional)</label>
+                                <input type="text" class="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring" placeholder="e.g., INH200001234" data-bind="form.sebiRegNumber">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium mt-6 hover:bg-primary/90 transition-colors flex items-center justify-center" data-event="click:handleVerifyAdvisor">
+                            <span id="verifyBtnText">Verify Advisor</span>
+                            <div id="verifySpinner" class="spinner ml-2 hidden"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Verification Results -->
+                <div id="advisorResults" class="bg-card rounded-lg shadow-md border border-border p-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold">Verification Results</h3>
+                        <span id="verificationBadge" class="px-3 py-1 rounded-full text-sm font-medium bg-accent text-accent-foreground">✅ Verified</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Rajesh Kumar</span>
+                                <span class="text-sm text-muted-foreground">SEBI ID: INH200001234</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">Registered Investment Advisor • Active since 2018</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Trust Score</span>
+                                <span class="font-bold text-lg" data-bind="advisor.trustScore">85/100</span>
+                            </div>
+                            <div class="w-full bg-muted rounded-full h-3">
+                                <div class="trust-score-gradient rounded-full h-3 relative">
+                                    <div class="absolute inset-0 bg-background rounded-full" style="width: 15%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div class="text-center p-3 bg-muted rounded-lg">
+                                <div class="text-2xl font-bold text-accent">2</div>
+                                <div class="text-sm text-muted-foreground">Years Experience</div>
+                            </div>
+                            <div class="text-center p-3 bg-muted rounded-lg">
+                                <div class="text-2xl font-bold text-destructive">1</div>
+                                <div class="text-sm text-muted-foreground">Complaints</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Collapsible Details -->
+                    <div class="mt-6">
+                        <button id="toggleDetails" class="flex items-center text-primary hover:text-primary/80 font-medium" data-event="click:toggleAdvisorDetails">
+                            <span>View Details & Reviews</span>
+                            <i class="fas fa-chevron-down ml-2 transition-transform" id="detailsChevron"></i>
+                        </button>
+                        
+                        <div id="advisorDetails" class="hidden mt-4 space-y-4">
+                            <div class="bg-muted rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Complaint History</h4>
+                                <div class="text-sm space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Minor procedural issue</span>
+                                        <span class="text-muted-foreground">Resolved - Jan 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-muted rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Recent Reviews</h4>
+                                <div class="space-y-3">
+                                    <!-- @MAP: reviews.map(review => ( -->
+                                    <div class="border-l-4 border-accent pl-3">
+                                        <div class="flex items-center mb-1">
+                                            <div class="flex text-yellow-400">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                            <span class="text-sm text-muted-foreground ml-2">by Priya S.</span>
+                                        </div>
+                                        <p class="text-sm">"Professional and knowledgeable. Helped me understand my investment options clearly."</p>
+                                    </div>
+                                    <!-- @END_MAP )) -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Verifications -->
+            <div class="mt-8 bg-card rounded-lg shadow-md border border-border p-6">
+                <h3 class="text-xl font-semibold mb-4">Recent Verifications</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- @MAP: recentVerifications.map(advisor => ( -->
+                    <div class="flex items-center p-3 bg-muted rounded-lg">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-primary-foreground"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium">Amit Sharma</div>
+                            <div class="text-sm text-muted-foreground">Trust Score: 92</div>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="text-accent">✅</span>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: AdvisorVerification -->
+
+        <!-- @COMPONENT: AppDetector [Fake app detection section] -->
+        <section id="app-detector" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Detection Form -->
+                <div class="bg-card rounded-lg shadow-md border border-border p-6">
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-mobile-alt text-primary text-xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold">Fake App Detector</h2>
+                    </div>
+                    
+                    <form id="appForm" data-implementation="Should call /check-app API">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">App or Website Name</label>
+                                <input type="text" class="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring" placeholder="e.g., QuickTrade Pro" data-bind="form.appName">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">URL or Website (Optional)</label>
+                                <input type="url" class="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring" placeholder="https://example.com" data-bind="form.appUrl">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium mt-6 hover:bg-primary/90 transition-colors flex items-center justify-center" data-event="click:handleCheckApp">
+                            <span id="checkBtnText">Check App</span>
+                            <div id="checkSpinner" class="spinner ml-2 hidden"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Detection Results -->
+                <div id="appResults" class="bg-card rounded-lg shadow-md border border-border p-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold">Analysis Results</h3>
+                        <span id="appStatusBadge" class="px-3 py-1 rounded-full text-sm font-medium bg-destructive text-destructive-foreground">⚠️ Suspicious</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold mb-2">QuickTrade Pro</h4>
+                            <p class="text-sm text-muted-foreground">Domain: quicktradepro.net</p>
+                        </div>
+                        
+                        <div class="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                            <h4 class="font-semibold text-destructive mb-2">Risk Factors Detected</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-triangle text-destructive mr-2 mt-0.5"></i>
+                                    <span>Domain registered less than 6 months ago</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-triangle text-destructive mr-2 mt-0.5"></i>
+                                    <span>Logo matches legitimate broker "TradeSafe"</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-triangle text-destructive mr-2 mt-0.5"></i>
+                                    <span>No SEBI registration found</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-muted rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">Recommendation</h4>
+                            <p class="text-sm">⚠️ Do not use this app for trading or provide personal information. Consider using verified brokers from our legitimate brokers list.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Legitimate Brokers Reference -->
+            <div class="mt-8 bg-card rounded-lg shadow-md border border-border p-6">
+                <h3 class="text-xl font-semibold mb-4">Verified Legitimate Brokers</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- @MAP: legitimateBrokers.map(broker => ( -->
+                    <div class="flex items-center p-3 bg-accent/10 border border-accent/20 rounded-lg">
+                        <div class="w-10 h-10 bg-accent rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-check text-accent-foreground"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium">Zerodha</div>
+                            <div class="text-sm text-muted-foreground">SEBI Registered</div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: AppDetector -->
+
+        <!-- @COMPONENT: ReviewsSection [Community reviews and ratings] -->
+        <section id="reviews" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Add Review Form -->
+                <div class="bg-card rounded-lg shadow-md border border-border p-6">
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-star text-primary text-xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold">Add Review</h2>
+                    </div>
+                    
+                    <form id="reviewForm" data-implementation="Should call /add-review API">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Advisor Name</label>
+                                <input type="text" class="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Enter advisor name" data-bind="form.advisorName">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Rating</label>
+                                <div class="flex space-x-1" id="starRating" data-implementation="Interactive star rating component">
+                                    <i class="fas fa-star text-yellow-400 text-xl cursor-pointer hover:scale-110 transition-transform"></i>
+                                    <i class="fas fa-star text-yellow-400 text-xl cursor-pointer hover:scale-110 transition-transform"></i>
+                                    <i class="fas fa-star text-yellow-400 text-xl cursor-pointer hover:scale-110 transition-transform"></i>
+                                    <i class="fas fa-star text-yellow-400 text-xl cursor-pointer hover:scale-110 transition-transform"></i>
+                                    <i class="far fa-star text-muted-foreground text-xl cursor-pointer hover:scale-110 transition-transform"></i>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Your Experience</label>
+                                <textarea class="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring" rows="4" placeholder="Share your experience with this advisor..." data-bind="form.reviewText"></textarea>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium mt-6 hover:bg-primary/90 transition-colors" data-event="click:handleSubmitReview">
+                            Submit Review
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Recent Reviews -->
+                <div class="bg-card rounded-lg shadow-md border border-border p-6">
+                    <h3 class="text-xl font-semibold mb-4">Community Reviews</h3>
+                    <div class="space-y-4 max-h-96 overflow-y-auto">
+                        <!-- @MAP: reviews.map(review => ( -->
+                        <div class="border-b border-border pb-4 last:border-b-0">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="font-semibold">Rajesh Kumar</div>
+                                    <div class="flex items-center mt-1">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <i class="fas fa-star text-sm"></i>
+                                            <i class="fas fa-star text-sm"></i>
+                                            <i class="fas fa-star text-sm"></i>
+                                            <i class="fas fa-star text-sm"></i>
+                                            <i class="far fa-star text-sm"></i>
+                                        </div>
+                                        <span class="text-sm text-muted-foreground">4.0</span>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-muted-foreground">2 days ago</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">"Excellent advice on mutual funds. Very professional and transparent about fees. Highly recommend for long-term investment planning."</p>
+                            <div class="flex items-center mt-2 text-sm text-muted-foreground">
+                                <span>by Investor123</span>
+                                <span class="mx-2">•</span>
+                                <span>Verified Client</span>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Rated Advisors -->
+            <div class="mt-8 bg-card rounded-lg shadow-md border border-border p-6">
+                <h3 class="text-xl font-semibold mb-4">Top Rated Advisors</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- @MAP: topRatedAdvisors.map(advisor => ( -->
+                    <div class="bg-muted rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-semibold">Dr. Priya Sharma</span>
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="font-semibold">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-muted-foreground mb-2">Portfolio Management Specialist</p>
+                        <div class="flex items-center text-sm text-muted-foreground">
+                            <span>24 reviews</span>
+                            <span class="mx-2">•</span>
+                            <span class="text-accent">SEBI Registered</span>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: ReviewsSection -->
+    </main>
+    <!-- @END_COMPONENT: MainDashboard -->
+
+    <!-- @COMPONENT: AlertModal [Success/Error notifications] -->
+    <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50" data-implementation="Modal for showing alerts and notifications">
+        <div class="bg-card rounded-lg p-6 max-w-md w-full mx-4 fade-in">
+            <div class="flex items-center mb-4">
+                <i id="alertIcon" class="text-2xl mr-3"></i>
+                <h3 id="alertTitle" class="text-lg font-semibold"></h3>
+            </div>
+            <p id="alertMessage" class="text-muted-foreground mb-4"></p>
+            <button id="closeAlert" class="w-full bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: AlertModal -->
+
+    <script>
+        (function() {
+            // TODO: Implement full React application with proper state management
+            // This is a demonstration mockup with basic interactivity
+            
+            // Tab Navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Update active tab styling
+                    document.querySelectorAll('.nav-tab').forEach(t => {
+                        t.classList.remove('text-primary', 'border-primary', 'bg-primary/10');
+                        t.classList.add('text-muted-foreground');
+                    });
+                    this.classList.remove('text-muted-foreground');
+                    this.classList.add('text-primary', 'border-primary');
+                    
+                    // Show/hide content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    document.getElementById(targetTab).classList.remove('hidden');
+                });
+            });
+            
+            // Dark Mode Toggle
+            document.getElementById('darkModeToggle').addEventListener('click', function() {
+                const isDark = document.documentElement.hasAttribute('data-theme');
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    this.innerHTML = '<i class="fas fa-moon text-muted-foreground"></i>';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    this.innerHTML = '<i class="fas fa-sun text-muted-foreground"></i>';
+                }
+            });
+            
+            // Mock Advisor Verification
+            document.getElementById('advisorForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('verifyBtnText');
+                const spinner = document.getElementById('verifySpinner');
+                
+                btn.textContent = 'Verifying...';
+                spinner.classList.remove('hidden');
+                
+                // TODO: Replace with actual API call to /verify-advisor
+                setTimeout(() => {
+                    document.getElementById('advisorResults').classList.remove('hidden');
+                    btn.textContent = 'Verify Advisor';
+                    spinner.classList.add('hidden');
+                    
+                    showAlert('success', 'Verification Complete', 'Advisor details have been successfully verified.');
+                }, 2000);
+            });
+            
+            // Mock App Detection
+            document.getElementById('appForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('checkBtnText');
+                const spinner = document.getElementById('checkSpinner');
+                
+                btn.textContent = 'Analyzing...';
+                spinner.classList.remove('hidden');
+                
+                // TODO: Replace with actual API call to /check-app
+                setTimeout(() => {
+                    document.getElementById('appResults').classList.remove('hidden');
+                    btn.textContent = 'Check App';
+                    spinner.classList.add('hidden');
+                    
+                    showAlert('warning', 'Analysis Complete', 'Potential risks detected. Please review the results carefully.');
+                }, 2000);
+            });
+            
+            // Toggle Advisor Details
+            document.getElementById('toggleDetails').addEventListener('click', function() {
+                const details = document.getElementById('advisorDetails');
+                const chevron = document.getElementById('detailsChevron');
+                
+                if (details.classList.contains('hidden')) {
+                    details.classList.remove('hidden');
+                    chevron.style.transform = 'rotate(180deg)';
+                } else {
+                    details.classList.add('hidden');
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Review Form Submission
+            document.getElementById('reviewForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // TODO: Replace with actual API call to /add-review
+                showAlert('success', 'Review Submitted', 'Thank you for your feedback! Your review helps protect other investors.');
+                this.reset();
+            });
+            
+            // Star Rating Interaction
+            document.querySelectorAll('#starRating i').forEach((star, index) => {
+                star.addEventListener('click', function() {
+                    document.querySelectorAll('#starRating i').forEach((s, i) => {
+                        if (i <= index) {
+                            s.classList.remove('far');
+                            s.classList.add('fas', 'text-yellow-400');
+                        } else {
+                            s.classList.remove('fas', 'text-yellow-400');
+                            s.classList.add('far', 'text-muted-foreground');
+                        }
+                    });
+                });
+                
+                star.addEventListener('mouseenter', function() {
+                    document.querySelectorAll('#starRating i').forEach((s, i) => {
+                        if (i <= index) {
+                            s.classList.add('text-yellow-400');
+                        } else {
+                            s.classList.remove('text-yellow-400');
+                        }
+                    });
+                });
+            });
+            
+            // Alert System
+            function showAlert(type, title, message) {
+                const modal = document.getElementById('alertModal');
+                const icon = document.getElementById('alertIcon');
+                const titleEl = document.getElementById('alertTitle');
+                const messageEl = document.getElementById('alertMessage');
+                
+                const alertTypes = {
+                    success: { icon: 'fas fa-check-circle text-accent', title: title },
+                    warning: { icon: 'fas fa-exclamation-triangle text-yellow-400', title: title },
+                    error: { icon: 'fas fa-times-circle text-destructive', title: title }
+                };
+                
+                icon.className = alertTypes[type].icon;
+                titleEl.textContent = alertTypes[type].title;
+                messageEl.textContent = message;
+                modal.classList.remove('hidden');
+            }
+            
+            document.getElementById('closeAlert').addEventListener('click', function() {
+                document.getElementById('alertModal').classList.add('hidden');
+            });
+            
+            // Close modal on background click
+            document.getElementById('alertModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+            
+        })();
+    </script>
+</body>
+</html>
