@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Shield, UserCheck, Smartphone, MessageSquare, Moon, Sun, LogOut } from "lucide-react";
+import { Shield, UserCheck, Smartphone, MessageSquare, Moon, Sun, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authService } from "@/lib/auth";
 import { useLocation } from "wouter";
@@ -43,10 +43,11 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
     { id: "verify-advisor", label: "Verify Advisor", icon: UserCheck },
     { id: "app-detector", label: "App Detector", icon: Smartphone },
     { id: "reviews", label: "Reviews", icon: MessageSquare },
+    { id: "profile", label: "Profile", icon: User },
   ];
 
   return (
-    <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-sm sticky top-0 z-50">
+    <header className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">

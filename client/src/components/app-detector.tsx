@@ -75,10 +75,12 @@ export default function AppDetector() {
     <section className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Detection Form */}
-        <Card>
+        <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Smartphone className="w-5 h-5 mr-2 text-blue-600" />
+            <CardTitle className="flex items-center text-xl">
+              <div className="w-10 h-10 bg-gradient-to-r from-orange-600 to-red-600 rounded-lg flex items-center justify-center mr-3">
+                <Smartphone className="w-5 h-5 text-white" />
+              </div>
               Fake App Detector
             </CardTitle>
           </CardHeader>
@@ -121,7 +123,7 @@ export default function AppDetector() {
 
         {/* Detection Results */}
         {checkResult && (
-          <Card>
+          <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm scale-in">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Analysis Results</CardTitle>
@@ -186,9 +188,14 @@ export default function AppDetector() {
       </div>
       
       {/* Legitimate Brokers Reference */}
-      <Card>
+      <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Verified Legitimate Brokers</CardTitle>
+          <CardTitle className="flex items-center text-xl">
+            <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
+              <Shield className="w-5 h-5 text-white" />
+            </div>
+            Verified Legitimate Brokers
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {legitimateApps?.apps?.length > 0 ? (

@@ -86,10 +86,12 @@ export default function AdvisorVerification() {
     <section className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Verification Form */}
-        <Card>
+        <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <UserCheck className="w-5 h-5 mr-2 text-blue-600" />
+            <CardTitle className="flex items-center text-xl">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                <UserCheck className="w-5 h-5 text-white" />
+              </div>
               Advisor Verification
             </CardTitle>
           </CardHeader>
@@ -177,7 +179,7 @@ export default function AdvisorVerification() {
 
         {/* Verification Results */}
         {verificationResult && (
-          <Card>
+          <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm scale-in">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Verification Results</CardTitle>
@@ -304,9 +306,14 @@ export default function AdvisorVerification() {
       </div>
       
       {/* Recent Verifications */}
-      <Card>
+      <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Recent Verifications</CardTitle>
+          <CardTitle className="flex items-center text-xl">
+            <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
+              <UserCheck className="w-5 h-5 text-white" />
+            </div>
+            Recent Verifications
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {recentAdvisors?.advisors?.length > 0 ? (

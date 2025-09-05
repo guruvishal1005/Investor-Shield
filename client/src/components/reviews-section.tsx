@@ -112,10 +112,12 @@ export default function ReviewsSection() {
     <section className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Add Review Form */}
-        <Card>
+        <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Star className="w-5 h-5 mr-2 text-blue-600" />
+            <CardTitle className="flex items-center text-xl">
+              <div className="w-10 h-10 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-lg flex items-center justify-center mr-3">
+                <Star className="w-5 h-5 text-white" />
+              </div>
               Add Review
             </CardTitle>
           </CardHeader>
@@ -167,9 +169,14 @@ export default function ReviewsSection() {
         </Card>
 
         {/* Recent Reviews */}
-        <Card>
+        <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle>Community Reviews</CardTitle>
+            <CardTitle className="flex items-center text-xl">
+              <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mr-3">
+                <MessageSquare className="w-5 h-5 text-white" />
+              </div>
+              Community Reviews
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -217,9 +224,14 @@ export default function ReviewsSection() {
       </div>
       
       {/* Top Rated Advisors */}
-      <Card>
+      <Card className="card-hover border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Top Rated Advisors</CardTitle>
+          <CardTitle className="flex items-center text-xl">
+            <div className="w-10 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+              <Star className="w-5 h-5 text-white" />
+            </div>
+            Top Rated Advisors
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {topRatedAdvisors?.advisors?.length > 0 ? (
